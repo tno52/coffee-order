@@ -3,8 +3,25 @@ package edu.iu.habahram.coffeeorder.repository;
 import edu.iu.habahram.coffeeorder.model.*;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Random;
+
 @Repository
 public class OrderRepository {
+    private static final String DATABASE_NAME = "db.txt";
+    private static final String NEW_LINE = System.lineSeparator();
+    private static void appendToFile(Path path, String content)
+            throws IOException {
+        Files.write(path,
+                content.getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND);
+    }
     public Receipt add(OrderData order) throws Exception {
         Beverage beverage = null;
         switch (order.beverage().toLowerCase()) {
@@ -27,7 +44,10 @@ public class OrderRepository {
                     throw new Exception("Condiment type '%s' is not valid".formatted(condiment));
             }
         }
-        Receipt receipt = new Receipt(beverage.getDescription(), beverage.cost());
+        int id = (int)(Math.random() * 1000);
+        Receipt receipt = new Receipt(beverage.getDescription(), beverage.cost(),id);
+        Path path = Paths.get(DATABASE_NAME);
+        appendToFile(path,id+","+beverage.cost()+","+beverage.getDescription());
         return receipt;
     }
 }
