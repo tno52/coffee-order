@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://dpg-coha0uvsc6pc73ak5lk0-a.ohio-postgres.render.com/c322_postgresql
+    username: c322_postgresql_user
+    password: pKVeSIPQr3Cs519DccrbzPi3VgZJSCh3
+
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
+  tomcat:
+    accesslog:
+      enabled: true
